@@ -28,24 +28,24 @@ try:
     if os.path.exists(MODEL_PATH) and os.path.exists(FEATURES_PATH):
         model = joblib.load(MODEL_PATH)
         model_features = joblib.load(FEATURES_PATH)
-        print("✅ Modelo y Features cargados correctamente.")
+        print(" Modelo y Features cargados correctamente.")
     else:
-        print("❌ ERROR: No encuentro los archivos .joblib en artifacts.")
+        print(" ERROR: No encuentro los archivos .joblib en artifacts.")
 except Exception as e:
-    print(f"❌ Error fatal: {e}")
+    print(f" Error fatal: {e}")
 
 # --- 4. DEFINIR EL FORMATO DE ENTRADA (JSON) ---
 class ClientData(BaseModel):
-    # Variables mínimas para probar (puedes agregar más)
     EXT_SOURCE_3: float = 0.5
     EXT_SOURCE_2: float = 0.5
     DAYS_BIRTH: int = -15000
     DAYS_EMPLOYED: int = -2000
     AMT_CREDIT: float = 100000.0
     AMT_INCOME_TOTAL: float = 50000.0
-    # Permite recibir cualquier otra columna extra que el modelo necesite
+    
+    # CAMBIO AQUÍ: 'forbid' elimina el campo additionalProp1 de la pantalla azul
     class Config:
-        extra = "allow"
+        extra = "forbid"
 
 # --- 5. ENDPOINT DE PREDICCIÓN ---
 @app.post("/evaluate_risk")
